@@ -1,29 +1,24 @@
 class Packager
-  def self.packages packages
-    feet_of_wrap = 0
-    packages.each do | dimensions |
-      feet_of_wrap += calculate_package(dimensions)
-    end
-    feet_of_wrap
-  end
-
-  def self.calculate_package dimensions
-    dims = get_dimensions dimensions
-    areas = calculate_areas dims
-    total_surface_area = calculate_total_areas areas
-    slack = get_slack areas
-
-    total_surface_area + slack
+  def self.wrapping packages
+    packages.each_with_object([]) do | dimensions, feet_of_wrap |
+      feet_of_wrap << calculate_package_wrapping(dimensions)
+    end.reduce(:+)
   end
 
   private
+
+  def self.calculate_package_wrapping dimensions
+    areas = calculate_each_side_areas get_dimensions(dimensions)
+
+    calculate_total_areas(areas) + get_slack(areas)
+  end
 
   def self.get_slack areas
     areas.min
   end
 
   def self.calculate_total_areas areas
-    (areas[0] * 2) + (areas[1] * 2) + (areas[2] * 2)
+    areas.reduce(:+) * 2
   end
 
   def self.get_dimensions dimension_string
@@ -34,7 +29,7 @@ class Packager
     dimensions.map{|i| i.to_i}
   end
 
-  def self.calculate_areas dims
+  def self.calculate_each_side_areas dims
     areas = []
     areas << dims[0] * dims[1]
     areas << dims[1] * dims[2]
@@ -44,16 +39,16 @@ end
 
 describe Packager do
   it "calculates the wrap required for a single package" do
-    expect(Packager.calculate_package("2x3x4")).to eq 58
+    expect(Packager.wrapping(["2x3x4"])).to eq 58
   end
 
   it "calculates the total wrap required for multiple packages" do
-    expect(Packager.packages(["2x3x4", "1x1x10"])).to eq 101
+    expect(Packager.wrapping(["2x3x4", "1x1x10"])).to eq 101
   end
 
-  it "calculates the total wrap for a long list of packages" do
+  it "Part 1 solution: calculates the total wrap for a long list of packages" do
     input = File.readlines("inputs").map{|i| i.chomp}
-    expect(Packager.packages(input)).to eq 1598415
+    expect(Packager.wrapping(input)).to eq 1598415
   end
 end
 
