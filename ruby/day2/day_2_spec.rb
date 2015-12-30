@@ -52,7 +52,7 @@ describe Packager do
   end
 
   it "calculates the total wrap for a long list of packages" do
-    input = File.readlines("inputs/2").map{|i| i.chomp}
+    input = File.readlines("inputs").map{|i| i.chomp}
     expect(Packager.packages(input)).to eq 1598415
   end
 end
