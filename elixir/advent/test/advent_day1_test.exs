@@ -1,6 +1,6 @@
-defmodule AdventTest do
+defmodule AdventDay1Test do
   use ExUnit.Case
-  doctest Advent
+  doctest AdventDay1
 
   test "the truth" do
     assert 1 + 1 == 2
