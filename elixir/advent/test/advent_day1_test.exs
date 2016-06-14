@@ -18,7 +18,7 @@ defmodule AdventDay1Test do
   end
 
   test "can count a large number of floors" do
-    {:ok, data} = File.read("test/data/day1_input")
+    {:ok, data} = File.read("../../input/day1_input")
     final_floor = AdventDay1.final_floor(0, String.trim(data))
     assert final_floor == 138
   end
@@ -39,7 +39,7 @@ defmodule AdventDay1Test do
   end
 
   test "can handle a large set of data" do
-    {:ok, data} = File.read("test/data/day1_input")
+    {:ok, data} = File.read("../../input/day1_input")
     basement_move = AdventDay1.enter_basement(String.trim(data))
     assert basement_move == 1771
   end
