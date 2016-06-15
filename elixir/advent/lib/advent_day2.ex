@@ -1,14 +1,17 @@
 defmodule AdventDay2 do
-  def get_paper_required(dimensions) do
-    dimensions
-    |> extract_package_dimensions
-    |> Enum.reduce(0, fn(dims, acc) -> calculate_package_areas(dims, acc) end)
+  def get_required(type, dimensions) do
+    fun = case type do
+      :paper ->  fn(dims, acc) -> calculate_package_areas(dims, acc) end
+      :ribbon -> fn(dims, acc) -> calculate_ribbon_length(dims, acc) end
+    end
+
+    get_material_required(dimensions, fun)
   end
 
-  def get_ribbon_required(dimensions) do
+  def get_material_required(dimensions, fun) do
     dimensions
     |> extract_package_dimensions
-    |> Enum.reduce(0, fn(dims, acc) -> calculate_ribbon_length(dims, acc) end)
+    |> Enum.reduce(0, fn(dims, acc) -> fun.(dims, acc) end)
   end
 
   defp extract_package_dimensions(package_list) do
@@ -29,7 +32,6 @@ defmodule AdventDay2 do
     calculate_raw_length(dimensions) +
     calculate_extra_length(dimensions)
   end
-
 
   defp calculate_package_areas(dimensions, total_area) do
     total_area +
