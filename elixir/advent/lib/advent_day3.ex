@@ -1,24 +1,12 @@
 defmodule AdventDay3 do
+  @meat_santa 0
+  @robo_santa 1
+
   def robo_deliver(moves \\ "") do
-    santa_moves = moves
-    |> parse_moves
-    |> extract_moves(1)
-    |> make_moves
+    santa_moves = robo_deliver(@meat_santa, moves)
+    robo_moves  = robo_deliver(@robo_santa, moves)
 
-    robo_moves = moves
-    |> parse_moves
-    |> extract_moves(0)
-    |> make_moves
-
-    moves = santa_moves ++ robo_moves
-    count_deliveries(moves)
-  end
-
-  def extract_moves(moves, odd_even) do
-    moves
-    |> Enum.with_index(1)
-    |> Enum.filter(fn({_, i}) -> rem(i, 2) == odd_even end)
-    |> Enum.map(fn(x) -> elem(x, 0) end)
+    santa_moves ++ robo_moves |> count_deliveries
   end
 
   def deliver(moves \\ "") do
@@ -28,30 +16,44 @@ defmodule AdventDay3 do
     |> count_deliveries
   end
 
-  def count_deliveries(deliveries) do
+  defp robo_deliver(santa_type, moves) do
+    moves
+    |> parse_moves
+    |> extract_moves(santa_type)
+    |> make_moves
+  end
+
+  defp extract_moves(moves, odd_even) do
+    moves
+    |> Enum.with_index(1)
+    |> Enum.filter(fn({_, i}) -> rem(i, 2) == odd_even end)
+    |> Enum.map(fn(x) -> elem(x, 0) end)
+  end
+
+  defp count_deliveries(deliveries) do
     deliveries
     |> Enum.uniq
     |> Enum.count
   end
 
-  def make_moves(moves) do
+  defp make_moves(moves) do
     moves
     |> Enum.reduce([{0,0}], fn(moves, acc) -> make_move(moves, acc) end)
   end
 
-  def parse_moves(moves) do
+  defp parse_moves(moves) do
     moves
     |> String.strip
     |> String.split("", trim: :true)
   end
 
-  def make_move(move, deliveries) do
+  defp make_move(move, deliveries) do
     deliveries ++ get_location(move, List.last(deliveries))
   end
 
-  def get_location(">", {x, y}), do: [{x+1, y}]
-  def get_location("<", {x, y}), do: [{x-1, y}]
-  def get_location("^", {x, y}), do: [{x, y+1}]
-  def get_location("v", {x, y}), do: [{x, y-1}]
-  def get_location(_,   {x, y}), do: [{x, y}]
+  defp get_location(">", {x, y}), do: [{x+1, y}]
+  defp get_location("<", {x, y}), do: [{x-1, y}]
+  defp get_location("^", {x, y}), do: [{x, y+1}]
+  defp get_location("v", {x, y}), do: [{x, y-1}]
+  defp get_location(_,   {x, y}), do: [{x, y}]
 end
