@@ -1,4 +1,26 @@
 defmodule AdventDay3 do
+  def robo_deliver(moves \\ "") do
+    santa_moves = moves
+    |> parse_moves
+    |> extract_moves(1)
+    |> make_moves
+
+    robo_moves = moves
+    |> parse_moves
+    |> extract_moves(0)
+    |> make_moves
+
+    moves = santa_moves ++ robo_moves
+    count_deliveries(moves)
+  end
+
+  def extract_moves(moves, odd_even) do
+    moves
+    |> Enum.with_index(1)
+    |> Enum.filter(fn({_, i}) -> rem(i, 2) == odd_even end)
+    |> Enum.map(fn(x) -> elem(x, 0) end)
+  end
+
   def deliver(moves \\ "") do
     moves
     |> parse_moves
