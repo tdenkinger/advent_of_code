@@ -6,33 +6,30 @@ defmodule AdventDay5 do
     |> Enum.count
   end
 
-  def is_nice?(name) do
+  defp is_nice?(name) do
        no_naughty_pairs?(name)
     && has_enough_vowels?(name)
     && has_repeated_letters?(name)
   end
 
-  def no_naughty_pairs?(name) do
+  defp no_naughty_pairs?(name) do
     ! String.contains?(name, ["ab", "cd", "pq", "xy"])
   end
 
-  def has_enough_vowels?(name) do
-    name
-    |> String.split("", trim: :true)
-    |> Enum.filter(fn(x) -> String.contains?("aeiou", x) end)
+  defp has_enough_vowels?(name) do
+    split_name(name)
+    |> Enum.filter(fn(letter) -> String.contains?("aeiou", letter) end)
     |> Enum.count >= 3
   end
 
-  def has_repeated_letters?(name) do
-    raw_count = name
-    |> String.split("", trim: :true)
-    |> Enum.count
+  defp split_name(name) do
+    name |> String.split("", trim: :true)
+  end
 
-    deduped_count = name
-    |> String.split("", trim: :true)
-    |> Enum.dedup
-    |> Enum.count
+  defp has_repeated_letters?(name) do
+    total_count   = split_name(name) |> Enum.count
+    deduped_count = split_name(name) |> Enum.dedup |> Enum.count
 
-    deduped_count < raw_count
+    deduped_count < total_count
   end
 end
