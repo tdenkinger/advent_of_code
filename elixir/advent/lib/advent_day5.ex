@@ -1,4 +1,8 @@
-defmodule AdventDay5 do
+defmodule AdventDay5.Improved do
+
+end
+
+defmodule AdventDay5.Original do
   def count_nice_names(name_list) do
     name_list
     |> String.split("\n", trim: :true)
