@@ -7,29 +7,14 @@ defmodule AdventDay5Test do
   describe "New and improved version" do
     alias AdventDay5.Improved
 
-    test "has more than one repeating pair" do
-      count = Improved.repeating_pairs("qjhvhtzxzqq")
-      assert count == 2
+    test "has more than one repeating pair, at beginning" do
+      has_a_repeating_pair = Improved.repeating_pair?("qjhvhtzxzqqjkmpb")
+      assert has_a_repeating_pair == true
     end
 
-    test "has a single repeated pair of letters" do
-      count = Improved.test_pairs(["x","x"])
-      assert count == 1
-    end
-
-    test "has a single un-overlapping repeated pair of letters" do
-      count = Improved.test_pairs(["x","x","x"])
-      assert count == 1
-    end
-
-    test "has multiple repeated pairs of letters" do
-      count = Improved.test_pairs(["x","x","y","y"])
-      assert count == 2
-    end
-
-    test "has separate, multiple repeated pairs of letters" do
-      count = Improved.test_pairs(["x","x","a","y","y"])
-      assert count == 2
+    test "has more than one repeating pair, one letter in" do
+      has_a_repeating_pair = Improved.repeating_pair?("aqjhvhtzxzqqjkmpb")
+      assert has_a_repeating_pair == true
     end
   end
 
@@ -67,4 +52,30 @@ defmodule AdventDay5Test do
       assert count == 236
     end
   end
+
+  describe "Deprecated stuff" do
+    alias AdventDay5.Deprecated
+
+    test "has a single repeated pair of letters" do
+      count = Deprecated.test_pairs(["x","x"])
+      assert count == 1
+    end
+
+    test "has a single un-overlapping repeated pair of letters" do
+      count = Deprecated.test_pairs(["x","x","x"])
+      assert count == 1
+    end
+
+    test "has multiple repeated pairs of letters" do
+      count = Deprecated.test_pairs(["x","x","y","y"])
+      assert count == 2
+    end
+
+    test "has separate, multiple repeated pairs of letters" do
+      count = Deprecated.test_pairs(["x","x","a","y","y"])
+      assert count == 2
+    end
+  end
 end
+
+

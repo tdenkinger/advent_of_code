@@ -5,30 +5,24 @@ defmodule AdventDay5 do
 end
 
 defmodule AdventDay5.Improved do
-  def test_pairs(name_list), do: test_pairs(name_list, 0)
-
-  def test_pairs([], acc), do: acc
-
-  def test_pairs([h | t], acc) do
-    cond do
-      next_pair_matches?(h, t) -> test_pairs(remove_matched_char(t, h), acc + 1)
-      true -> test_pairs(t, acc)
-    end
-  end
-
-  defp next_pair_matches?(letter, letters) do
-    letter == Enum.at(letters, 0)
-  end
-
-  defp remove_matched_char(letters, match) do
-    List.delete(letters, match)
-  end
-
-  def repeating_pairs(name) do
+  def repeating_pair?(name) do
     name
     |> AdventDay5.split_name
-    |> test_pairs
-    |> IO.inspect
+    |> test_for_pair
+  end
+
+  defp test_for_pair(name_list) do
+    name_list |> get_chunks(start_at: 0) |> compare_pairs
+    ||
+    name_list |> get_chunks(start_at: 1) |> compare_pairs
+  end
+
+  defp compare_pairs(pairs) do
+    pairs != Enum.uniq(pairs)
+  end
+
+  defp get_chunks(list, params) do
+    list |> Enum.drop(params[:start_at]) |> Enum.chunk(2)
   end
 end
 
@@ -61,5 +55,26 @@ defmodule AdventDay5.Original do
     deduped_count = AdventDay5.split_name(name) |> Enum.dedup |> Enum.count
 
     deduped_count < total_count
+  end
+end
+
+defmodule AdventDay5.Deprecated do
+  def test_pairs(name_list), do: test_pairs(name_list, 0)
+
+  def test_pairs([], acc), do: acc
+
+  def test_pairs([h | t], acc) do
+    cond do
+      next_pair_matches?(h, t) -> test_pairs(remove_matched_char(t, h), acc + 1)
+      true -> test_pairs(t, acc)
+    end
+  end
+
+  defp next_pair_matches?(letter, letters) do
+    letter == Enum.at(letters, 0)
+  end
+
+  defp remove_matched_char(letters, match) do
+    List.delete(letters, match)
   end
 end
