@@ -70,30 +70,5 @@ defmodule AdventDay5Test do
       assert count == 236
     end
   end
-
-  describe "Deprecated stuff" do
-    alias AdventDay5.Deprecated
-
-    test "has a single repeated pair of letters" do
-      count = Deprecated.test_pairs(["x","x"])
-      assert count == 1
-    end
-
-    test "has a single un-overlapping repeated pair of letters" do
-      count = Deprecated.test_pairs(["x","x","x"])
-      assert count == 1
-    end
-
-    test "has multiple repeated pairs of letters" do
-      count = Deprecated.test_pairs(["x","x","y","y"])
-      assert count == 2
-    end
-
-    test "has separate, multiple repeated pairs of letters" do
-      count = Deprecated.test_pairs(["x","x","a","y","y"])
-      assert count == 2
-    end
-  end
 end
-
 

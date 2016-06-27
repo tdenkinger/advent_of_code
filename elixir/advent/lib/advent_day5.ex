@@ -79,23 +79,3 @@ defmodule AdventDay5.Original do
   end
 end
 
-defmodule AdventDay5.Deprecated do
-  def test_pairs(name_list), do: test_pairs(name_list, 0)
-
-  def test_pairs([], acc), do: acc
-
-  def test_pairs([h | t], acc) do
-    cond do
-      next_pair_matches?(h, t) -> test_pairs(remove_matched_char(t, h), acc + 1)
-      true -> test_pairs(t, acc)
-    end
-  end
-
-  defp next_pair_matches?(letter, letters) do
-    letter == Enum.at(letters, 0)
-  end
-
-  defp remove_matched_char(letters, match) do
-    List.delete(letters, match)
-  end
-end
