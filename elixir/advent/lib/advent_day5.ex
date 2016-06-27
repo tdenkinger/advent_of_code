@@ -5,13 +5,34 @@ defmodule AdventDay5 do
 end
 
 defmodule AdventDay5.Improved do
+  def gap_pair?(name) do
+    name
+    |> AdventDay5.split_name
+    |> find_gap_pair
+  end
+
   def repeating_pair?(name) do
     name
     |> AdventDay5.split_name
-    |> test_for_pair
+    |> find_pair
   end
 
-  defp test_for_pair(name_list) do
+  defp find_gap_pair(name_list) do
+    find_gap_pair(name_list, false)
+  end
+
+  defp find_gap_pair(_, true), do: true
+
+  defp find_gap_pair([], false), do: false
+
+  defp find_gap_pair([h | t], false) do
+    cond do
+      h == Enum.at(t, 1) -> find_gap_pair(t, true)
+      true               -> find_gap_pair(t, false)
+    end
+  end
+
+  defp find_pair(name_list) do
     name_list |> get_chunks(start_at: 0) |> compare_pairs
     ||
     name_list |> get_chunks(start_at: 1) |> compare_pairs
