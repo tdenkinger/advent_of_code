@@ -5,20 +5,25 @@ defmodule AdventDay5 do
 end
 
 defmodule AdventDay5.Improved do
-  def gap_pair?(name) do
-    name
-    |> AdventDay5.split_name
-    |> find_gap_pair
+  def count_nice_names(name_list) do
+    name_list
+    |> String.split("\n", trim: :true)
+    |> Enum.filter(fn(name) -> is_nice?(name) == true end)
+    |> Enum.count
   end
 
-  def repeating_pair?(name) do
+  defp is_nice?(name), do: repeating_pair?(name) && gap_pair?(name)
+
+  defp gap_pair?(name) do
     name
     |> AdventDay5.split_name
-    |> find_pair
+    |> find_gap_pair(false)
   end
 
-  defp find_gap_pair(name_list) do
-    find_gap_pair(name_list, false)
+  defp repeating_pair?(name) do
+    name
+    |> AdventDay5.split_name
+    |> matching_pair?
   end
 
   defp find_gap_pair(_, true), do: true
@@ -32,18 +37,18 @@ defmodule AdventDay5.Improved do
     end
   end
 
-  defp find_pair(name_list) do
-    name_list |> get_chunks(start_at: 0) |> compare_pairs
-    ||
-    name_list |> get_chunks(start_at: 1) |> compare_pairs
+  defp matching_pair?(name_list) do
+    name_list
+    |> extract_pairs([])
+    |> check_for_matching_pairs
   end
 
-  defp compare_pairs(pairs) do
-    pairs != Enum.uniq(pairs)
-  end
+  defp check_for_matching_pairs(pairs), do: pairs != Enum.uniq(pairs)
 
-  defp get_chunks(list, params) do
-    list |> Enum.drop(params[:start_at]) |> Enum.chunk(2)
+  defp extract_pairs([], acc), do: acc
+
+  defp extract_pairs([h | t], acc) do
+    extract_pairs t, List.insert_at(acc, 0, [h, Enum.at(t, 0)])
   end
 end
 

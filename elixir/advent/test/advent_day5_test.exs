@@ -5,39 +5,30 @@ defmodule AdventDay5Test do
   describe "New and improved version" do
     alias AdventDay5.Improved
 
-    test "identifies a pair with a one-character gap, short string" do
-      has_gap_pair = Improved.gap_pair?("xyx")
-      assert has_gap_pair == true
+    test "find nice names in one long name" do
+      count = Improved.count_nice_names("qjhvhtzxzqqjkmpb")
+      assert count == 1
     end
 
-    test "identifies a pair with a one-character gap, long string" do
-      has_gap_pair = Improved.gap_pair?("abcdefeghi")
-      assert has_gap_pair == true
+    test "finds nice names in one short name" do
+      count = Improved.count_nice_names("xxyxx")
+      assert count == 1
     end
 
-    test "identifies a pair with a one-character gap, with matching gap" do
-      has_gap_pair = Improved.gap_pair?("aaa")
-      assert has_gap_pair == true
+    test "does not find a nice name even though there is a pair" do
+      count = Improved.count_nice_names("uurcxstgmygtbstg")
+      assert count == 0
     end
 
-    test "identifies a string without a gapped pair" do
-      has_gap_pair = Improved.gap_pair?("aabcqrst")
-      assert has_gap_pair == false
+    test "does not find a nice name even though there is a gap pair" do
+      count = Improved.count_nice_names("ieodomkazucvgmuy")
+      assert count == 0
     end
 
-    test "has more than one repeating pair, at beginning" do
-      has_a_repeating_pair = Improved.repeating_pair?("qjhvhtzxzqqjkmpb")
-      assert has_a_repeating_pair == true
-    end
-
-    test "has more than one repeating pair, not at start of string" do
-      has_a_repeating_pair = Improved.repeating_pair?("aqjhvhtzxzqqjkmpb")
-      assert has_a_repeating_pair == true
-    end
-
-    test "has only one non-overlapping pair" do
-      has_a_repeating_pair = Improved.repeating_pair?("aaa")
-      assert has_a_repeating_pair == false
+    test "find nice names on a long list" do
+      {:ok, data} = File.read("../../input/day5_input")
+      count = Improved.count_nice_names(data)
+      assert count == 0
     end
   end
 
