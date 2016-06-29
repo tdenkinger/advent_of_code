@@ -43,7 +43,9 @@ defmodule AdventDay5.Improved do
     |> check_for_matching_pairs
   end
 
-  defp check_for_matching_pairs(pairs), do: pairs != Enum.uniq(pairs)
+  defp check_for_matching_pairs(pairs) do
+    Enum.dedup(pairs) != Enum.uniq(pairs)
+  end
 
   defp extract_pairs([], acc), do: acc
 

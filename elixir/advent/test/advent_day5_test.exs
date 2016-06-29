@@ -15,6 +15,10 @@ defmodule AdventDay5Test do
       assert count == 1
     end
 
+    test "overlapping pairs are not nice" do
+      count = Improved.count_nice_names("xxxddetvrlpzsfpq")
+      assert count == 0
+    end
     test "does not find a nice name even though there is a pair" do
       count = Improved.count_nice_names("uurcxstgmygtbstg")
       assert count == 0
