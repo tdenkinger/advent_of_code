@@ -12,18 +12,20 @@ defmodule AdventDay5.Improved do
     |> Enum.count
   end
 
-  defp is_nice?(name), do: repeating_pair?(name) && gap_pair?(name)
+  defp is_nice?(name) do
+    repeating_pair?(name) && gap_pair?(name)
+  end
 
-  defp gap_pair?(name) do
+  def gap_pair?(name) do
     name
     |> AdventDay5.split_name
     |> find_gap_pair(false)
   end
 
-  defp repeating_pair?(name) do
+  def repeating_pair?(name) do
     name
     |> AdventDay5.split_name
-    |> matching_pair?
+    |> matching_pairs?
   end
 
   defp find_gap_pair(_, true), do: true
@@ -37,7 +39,7 @@ defmodule AdventDay5.Improved do
     end
   end
 
-  defp matching_pair?(name_list) do
+  defp matching_pairs?(name_list) do
     name_list
     |> extract_pairs([])
     |> check_for_matching_pairs
